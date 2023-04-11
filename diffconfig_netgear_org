@@ -132,3 +132,4 @@ CONFIG_LUCI_LANG_en=y
 #add some soft
 CONFIG_PACKAGE_luci-app-passwall=y
 CONFIG_PACKAGE_luci-app-smartdns=y
+CONFIG_PACKAGE_luci-app-openclash=y
