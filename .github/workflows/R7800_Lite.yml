@@ -24,6 +24,7 @@ env:
   REPO_BRANCH: kernel5.15-nss-qsdk11
   FEEDS_CONF: force_feeds.conf.default
   CONFIG_FILE: diffconfig_netgear_org
+  SOFTWARE_INSTALL_FILE: ubuntu_depends
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -43,8 +44,7 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
-        sudo -E apt-get -qq install python3-distutils  texinfo e2guardian uuid
+        sudo -E apt-get -qq install  $(cat $SOFTWARE_INSTALL_FILE)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
