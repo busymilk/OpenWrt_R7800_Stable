@@ -53,36 +53,37 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 设置自定义 feeds
+      working-directory: ./openwrt
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-    - name: 更新 feeds
-      run: cd openwrt && ./scripts/feeds update -a
-
-    - name: 安装 feeds
-      run: cd openwrt && ./scripts/feeds install -a
+        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF openwrt/feeds.conf.default
+    - name: 更新安装 feeds
+      working-directory: ./openwrt
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
 
     - name: Load custom configuration & make config & clean folder & getversion
       run: |
         [ -e $CONFIG_FILE ] &&
-        rm -f openwrt/.config
-        cp $CONFIG_FILE openwrt/.config
+        mv -f $CONFIG_FILE openwrt/.config
         cd openwrt
         rm -rf staging_dir tmp bin build_dir
         make defconfig
-         ./scripts/getver.sh
+        chmod +x ./scripts/getver.sh && ./scripts/getver.sh
         
 
     - name: 下载依赖包
+      working-directory: ./openwrt
       id: package
       run: ｜
-        cd openwrt && make download -j8
+        make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
     - name: 编译固件
+      working-directory: ./openwrt
       id: compile
       run: ｜
-        cd openwrt
         make -j5 V=s
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
