@@ -74,7 +74,7 @@ jobs:
     - name: 下载依赖包
       working-directory: ./openwrt
       id: package
-      run: ｜
+      run: 
         make download -j8
 
     - name: 编译固件
