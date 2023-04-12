@@ -63,8 +63,8 @@ jobs:
 
     - name: Load custom configuration & make config & clean folder & getversion
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/.config
+        rm -f openwrt/.config
+        cp $CONFIG_FILE openwrt/.config
         cd openwrt
         rm -rf staging_dir tmp bin build_dir
         make defconfig
@@ -73,13 +73,12 @@ jobs:
 
     - name: 下载依赖包
       id: package
-      run: 
-        cd openwrt
-        make download -j8
+      run: ｜
+        cd openwrt && make download -j8
 
     - name: 编译固件
       id: compile
-      run: 
+      run: ｜
         cd openwrt
         make -j5 V=s
         echo "::set-output name=status::success"
