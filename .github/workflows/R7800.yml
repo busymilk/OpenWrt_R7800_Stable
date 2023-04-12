@@ -55,7 +55,7 @@ jobs:
     - name: 设置自定义 feeds
       working-directory: ./openwrt
       run: |
-        [ -e $FEEDS_CONF ] && mv -f $FEEDS_CONF openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] && cp -f $FEEDS_CONF openwrt/feeds.conf.default
     - name: 更新安装 feeds
       working-directory: ./openwrt
       run: |
