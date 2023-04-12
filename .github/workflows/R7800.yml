@@ -53,7 +53,6 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 设置自定义 feeds
-      working-directory: ./openwrt
       run: |
         [ -e $FEEDS_CONF ] && cp -f $FEEDS_CONF openwrt/feeds.conf.default
     - name: 更新安装 feeds
